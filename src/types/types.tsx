@@ -30,4 +30,5 @@ export interface IBooks {
   released: Date | string;
   characters?: string[];
   povCharacters?: string[];
+  genere?: string
 }

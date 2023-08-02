@@ -10,7 +10,7 @@ interface IModalProps {
 const ModalDialog = ({ isOpen, setIsOpen }: IModalProps) => {
 
     return (
-        <Modal show={isOpen} onClose={() => setIsOpen(false)} className='bg-gray-900'>
+        <Modal dismissible show={isOpen} onClose={() => setIsOpen(false)} className='bg-gray-900'>
             <Modal.Header className='bg-gray-800'>
                 <span className='text-white'>Agrega un nuevo libro</span>
             </Modal.Header>

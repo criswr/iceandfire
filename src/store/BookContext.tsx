@@ -8,21 +8,27 @@ type Children = {
 type BookContextType = {
     bookList: IBooks[],
     favBook: (id: string) => void,
+    favorites: IBooks[],
     addBook: (book: IBooks) => void,
     currentBook: IBooks | undefined,
     setCurrentBookUrl: (url: string) => void,
     loading: boolean,
     setLoading: (bool: boolean) => void,
+    toastOpen: boolean,
+    setToastOpen: (bool: boolean) => void
 }
 
 const defaultContext: BookContextType = {
     bookList: [],
     favBook: () => {},
+    favorites: [],
     addBook: () => {},
     setCurrentBookUrl: () => {},
     currentBook: undefined,
     loading: false,
-    setLoading: () => {}
+    setLoading: () => {},
+    toastOpen: false,
+    setToastOpen: () => {},
 }
 
 export const BookContext = createContext<BookContextType>(defaultContext)
@@ -34,12 +40,16 @@ const BookContextProvider = ({children}:Children) => {
     const [currentBookUrl, setCurrentBookUrl] = useState<string>()
     const [currentBook, setCurrentBook] = useState<IBooks>()
     const [loading, setLoading] = useState<boolean>(false)
+    const [toastOpen, setToastOpen] = useState<boolean>(false)
 
     useEffect(() => {
         setLoading(true)           
             fetch('https://anapioficeandfire.com/api/books/', { method: 'GET' })
             .then(res => res.json())
-            .then(data => setBookList(data))
+            .then(data => {
+                const newData = data.map((book: IBooks) => ({...book, genere: 'Ciencia ficción'}))
+                setBookList(newData)
+            })
             .finally(() => setLoading(false))
     }, [])
 
@@ -52,8 +62,13 @@ const BookContextProvider = ({children}:Children) => {
     }, [currentBookUrl])
     
 
-    const favBook = (id: string): void => {
-        id
+    const favBook = (url: string): void => {
+        fetch(url, { method: 'GET' })
+        .then(res => res.json())
+        .then(data => {
+            if (favorites.some(book => book.url === url)) return
+            else setFavorites([...favorites, data])
+        })
     }
 
     const addBook = (newBook: IBooks): void => {
@@ -61,7 +76,7 @@ const BookContextProvider = ({children}:Children) => {
     }
 
     return (
-        <BookContext.Provider value={{ favBook, bookList, addBook, currentBook, setCurrentBookUrl, loading, setLoading }}>
+        <BookContext.Provider value={{ favBook, favorites, bookList, addBook, currentBook, setCurrentBookUrl, loading, setLoading, toastOpen, setToastOpen }}>
             {children}
         </BookContext.Provider>
     )

@@ -1,8 +1,9 @@
 import { useContext, useState } from 'react';
 import { getCoreRowModel, useReactTable, flexRender, ColumnDef, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table';
 import { TextInput, Table, Button } from 'flowbite-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BookContext } from '../../../store/BookContext';
+import ToastModal from '../../../components/ToastModal';
 
 interface IReactTableProps<T extends object> {
   data: T[],
@@ -18,11 +19,9 @@ type SortingState = ColumnSort[]
 
 const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) => {
 
-  const defaultGenere = 'Ciencia ficción'
-
   const [sorting, setSorting] = useState<SortingState>([])
   const [filtering, setFiltering] = useState<string>('')
-  const { setCurrentBookUrl, setLoading } = useContext(BookContext)
+  const { setCurrentBookUrl, setLoading, favBook, setToastOpen } = useContext(BookContext)
   const navigate = useNavigate()
   
   const table = useReactTable({
@@ -50,13 +49,21 @@ const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) =>
     navigate('/libro')
   }
 
+  const handleOnFavorite = (url:string | undefined) => {
+    url && favBook(url)
+    setToastOpen(true)
+    setTimeout(() => {
+      setToastOpen(false)
+    }, 1000)
+  }
+
   return(
     <div>
       <div>
         <TextInput
-          id="search"
-          placeholder="Buscar..."
-          type="text"
+          id='search'
+          placeholder='Buscar...'
+          type='text'
           value={filtering} 
           onChange={ e => setFiltering(e.target.value)}
           className='w-1/2 pb-5'
@@ -74,19 +81,23 @@ const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) =>
           </Table.Head>
         ))}
 
-        <Table.Body className="divide-y">
+        <Table.Body className='divide-y'>
           {table.getRowModel().rows.map(row => (
             <Table.Row key={row.id} className='bg-gray-800'>
               {row.getVisibleCells().map(cell => (
                 <Table.Cell className='whitespace-nowrap font-light text-base' key={cell.id}>
                   {
                     renderDetailsButton(cell.renderValue()?.toString() || '') ?
-                    <Button onClick={() => handleOnClick(cell.renderValue()?.toString())} component={Link} to='/libro'>
-                      Más información
-                    </Button> :
+                    <div className='flex gap-2'>
+                      <Button onClick={() => handleOnClick(cell.renderValue()?.toString())} >
+                        Info
+                      </Button>
+                      <Button onClick={() => handleOnFavorite(cell.renderValue()?.toString())} >
+                        Fav
+                      </Button>
+                    </div> :
                     <div>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      {!cell.renderValue() && defaultGenere}
                     </div>
                   }
                 </Table.Cell>
@@ -95,6 +106,8 @@ const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) =>
           ))}
         </Table.Body>
       </Table>
+
+      <ToastModal label='Se agregó a favoritos' />
     </div>
   )
 } 

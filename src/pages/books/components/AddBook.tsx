@@ -31,7 +31,7 @@ const AddBook = ({ setIsOpen }:IAddBook) => {
 
     return (
     <Formik
-       initialValues={{ name: '', authors: '', genere: '', released: '' }}
+       initialValues={{ name: '', authors: '', genere: '', released: '', url: '' }}
        validationSchema={AddBookSchema}
        onSubmit={(values, { setSubmitting }) => {
             addBook(values)
@@ -93,6 +93,8 @@ const AddBook = ({ setIsOpen }:IAddBook) => {
                 type='date'
             />
            {errors.released && touched.released && errors.released}
+
+           <input type='hidden' id='url' name='url' value='-' />
 
             <div className='flex gap-4'>
                 <Button type='submit' disabled={isSubmitting} >
