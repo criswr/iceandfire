@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const BookDetails = () => {
 
-    const {currentBook, loading} = useContext(BookContext)
+    const {currentBook, loading, formatDate} = useContext(BookContext)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const BookDetails = () => {
                         <p className='py-4 border-b border-gray-700'>Número de páginas: {currentBook.numberOfPages}</p>
                         <p className='py-4 border-b border-gray-700'>País: {currentBook.country}</p>
                         <p className='py-4 border-b border-gray-700'>Acabado: {currentBook.mediaType}</p>
-                        <p className='py-4'>Fecha de publicación: {currentBook.released.toString()}</p>
+                        <p className='py-4'>Fecha de publicación: {formatDate(currentBook.released)}</p>
                     </div>
                     }
                 </section>

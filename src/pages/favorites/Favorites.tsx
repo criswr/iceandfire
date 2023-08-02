@@ -11,7 +11,7 @@ const Favorites = () => {
           <ul className='list-disc pl-10 pt-5'>
             { 
               favorites.map(book => (
-                <li className='text-xl mb-5'>{book.name} <span className='italic text-gray-500'>{book.authors}, {book.numberOfPages} páginas</span></li>
+                <li className='text-xl mb-5' key={book.url}>{book.name} <span className='italic text-gray-500'>{book.authors}, {book.numberOfPages} páginas</span></li>
               ))
             }
           </ul> :

@@ -15,7 +15,8 @@ type BookContextType = {
     loading: boolean,
     setLoading: (bool: boolean) => void,
     toastOpen: boolean,
-    setToastOpen: (bool: boolean) => void
+    setToastOpen: (bool: boolean) => void,
+    formatDate: (date: string|Date) => string
 }
 
 const defaultContext: BookContextType = {
@@ -29,6 +30,7 @@ const defaultContext: BookContextType = {
     setLoading: () => {},
     toastOpen: false,
     setToastOpen: () => {},
+    formatDate: () => ''
 }
 
 export const BookContext = createContext<BookContextType>(defaultContext)
@@ -43,14 +45,15 @@ const BookContextProvider = ({children}:Children) => {
     const [toastOpen, setToastOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        setLoading(true)           
-            fetch('https://anapioficeandfire.com/api/books/', { method: 'GET' })
-            .then(res => res.json())
-            .then(data => {
-                const newData = data.map((book: IBooks) => ({...book, genere: 'Ciencia ficción'}))
-                setBookList(newData)
-            })
-            .finally(() => setLoading(false))
+        setLoading(true)
+
+        fetch('https://anapioficeandfire.com/api/books/', { method: 'GET' })
+        .then(res => res.json())
+        .then(data => {
+            const newData = data.map((book: IBooks) => ({...book, genere: 'Ciencia ficción', released: formatDate(book.released)}))
+            setBookList(newData)
+        })
+        .finally(() => setLoading(false))
     }, [])
 
     useEffect(() => {
@@ -75,8 +78,14 @@ const BookContextProvider = ({children}:Children) => {
         setBookList([...bookList, newBook])
     }
 
+    const formatDate = (rawDate: string|Date): string => {
+        const date = new Date(rawDate)
+        const formattedDate = date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
+        return formattedDate
+    }
+
     return (
-        <BookContext.Provider value={{ favBook, favorites, bookList, addBook, currentBook, setCurrentBookUrl, loading, setLoading, toastOpen, setToastOpen }}>
+        <BookContext.Provider value={{ favBook, favorites, bookList, addBook, currentBook, setCurrentBookUrl, loading, setLoading, toastOpen, setToastOpen, formatDate }}>
             {children}
         </BookContext.Provider>
     )
