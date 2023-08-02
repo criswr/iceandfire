@@ -54,7 +54,8 @@ const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) =>
     setToastOpen(true)
     setTimeout(() => {
       setToastOpen(false)
-    }, 1000)
+    }, 1000
+    )
   }
 
   return(
