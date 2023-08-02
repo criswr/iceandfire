@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { Button, TextInput } from 'flowbite-react';
-import { BookContext } from '../store/BookContext';
+import { BookContext } from '../../../store/BookContext';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -93,9 +93,7 @@ const AddBook = ({ setIsOpen }:IAddBook) => {
                 type='date'
             />
            {errors.released && touched.released && errors.released}
-           <button type="submit" disabled={isSubmitting}>
-             Submit
-           </button>
+
             <div className='flex gap-4'>
                 <Button type='submit' disabled={isSubmitting} >
                     Agregar

@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { getCoreRowModel, useReactTable, flexRender, ColumnDef, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table';
-import { TextInput, Table } from 'flowbite-react';
+import { TextInput, Table, Button } from 'flowbite-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { BookContext } from '../../../store/BookContext';
 
 interface IReactTableProps<T extends object> {
   data: T[],
@@ -20,7 +22,9 @@ const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) =>
 
   const [sorting, setSorting] = useState<SortingState>([])
   const [filtering, setFiltering] = useState<string>('')
-
+  const { setCurrentBookUrl, setLoading } = useContext(BookContext)
+  const navigate = useNavigate()
+  
   const table = useReactTable({
     data,
     columns,
@@ -34,6 +38,17 @@ const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) =>
       globalFilter: filtering
     }
   })
+
+  const renderDetailsButton = (content: string): boolean => {
+    try { return Boolean(new URL(content)) }
+    catch(e){ return false }
+  }
+
+  const handleOnClick = (url: string | undefined):void => {
+    setLoading(true)
+    url && setCurrentBookUrl(url)
+    navigate('/libro')
+  }
 
   return(
     <div>
@@ -64,8 +79,16 @@ const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) =>
             <Table.Row key={row.id} className='bg-gray-800'>
               {row.getVisibleCells().map(cell => (
                 <Table.Cell className='whitespace-nowrap font-light text-base' key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  {!cell.renderValue() && defaultGenere}
+                  {
+                    renderDetailsButton(cell.renderValue()?.toString() || '') ?
+                    <Button onClick={() => handleOnClick(cell.renderValue()?.toString())} component={Link} to='/libro'>
+                      Más información
+                    </Button> :
+                    <div>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {!cell.renderValue() && defaultGenere}
+                    </div>
+                  }
                 </Table.Cell>
               ))}
             </Table.Row>

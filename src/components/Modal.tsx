@@ -1,6 +1,6 @@
 import { Modal } from 'flowbite-react';
 import { Dispatch, SetStateAction } from 'react'
-import AddBook from './AddBook';
+import AddBook from '../pages/books/components/AddBook';
 
 interface IModalProps {
     isOpen: boolean,

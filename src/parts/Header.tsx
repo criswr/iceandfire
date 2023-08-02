@@ -1,4 +1,5 @@
 import { Navbar } from 'flowbite-react';
+import { NavLink } from "react-router-dom";
 
 interface ILink {
   label: string,
@@ -12,10 +13,6 @@ const Header = () => {
         route: '/',
     },
     {
-        label: 'Libros',
-        route: '/libros',
-    },
-    {
       label: 'Favoritos',
       route: '/favoritos',
   },
@@ -23,19 +20,19 @@ const Header = () => {
 
   return (
     <Navbar className='bg-gray-800'>
-      <Navbar.Brand href="/">
+      <NavLink to="/">
         <span className="self-center whitespace-nowrap text-xl font-semibold">
           Ice & Fire
         </span>
-      </Navbar.Brand>
+      </NavLink>
 
       <Navbar.Toggle />
 
       <Navbar.Collapse>
         {links.map(({ label, route }) => (
-          <Navbar.Link href={route} key={route} className='border-none text-white text-lg hover:bg-gray-600'>
+          <NavLink to={route} key={route} className='border-none text-white text-lg hover:bg-gray-600'>
             {label}
-          </Navbar.Link>
+          </NavLink>
         ))}
       </Navbar.Collapse>
     </Navbar>

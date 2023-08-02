@@ -18,17 +18,16 @@ export interface IBook {
   status: boolean
 }
 
-
 export interface IBooks {
-  url?:           string;
-  name:          string;
-  isbn?:          string;
-  authors:       string | string[];
+  url?: string;
+  name: string;
+  isbn?: string;
+  authors: string | string[];
   numberOfPages?: number;
-  publisher?:     string;
-  country?:       string | string[];
-  mediaType?:     string;
-  released:      Date | string;
-  characters?:    string[];
+  publisher?: string;
+  country?: string | string[];
+  mediaType?: string;
+  released: Date | string;
+  characters?: string[];
   povCharacters?: string[];
 }
