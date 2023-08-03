@@ -10,7 +10,7 @@
 * En el Navbar hay dos enlaces, uno de los cuales es Favoritos, vista donde se pueden revisar los libros agregados.
 
 ## Aspéctos técnicos
-* Proyecto inicializado con Vite y TypeScript.
+* Proyecto inicializado con Vite y TypeScript. Estilos manejados con Tailwind CSS. 
 * Los datos obtenidos de la API se guardan en el contexto de la app. Esto permite que el formulario para agregar nuevos libros sea funcional.
 * El contexto además guarda datos de loading, visibilidad del modal del formulario, lista de favoritos y libro actual siendo visualizado en detalle.
 * La tabla se renderiza utilizando tanstack/react-table.
