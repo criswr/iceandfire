@@ -9,7 +9,7 @@
 * Cada fila consta de dos botones a la derecha. El botón Info lleva a una página donde se pueden ver más detalles del libro. El botón Fav agrega el libro a la lista de favoritos.
 * En el Navbar hay dos enlaces, uno de los cuales es Favoritos, vista donde se pueden revisar los libros agregados.
 
-## Aspéctos técnicos
+## Aspectos técnicos
 * Proyecto inicializado con Vite y TypeScript. Estilos manejados con Tailwind CSS. 
 * Los datos obtenidos de la API se guardan en el contexto de la app. Esto permite que el formulario para agregar nuevos libros sea funcional.
 * El contexto además guarda datos de loading, visibilidad del modal del formulario, lista de favoritos y libro actual siendo visualizado en detalle.
