@@ -17,6 +17,11 @@ type ColumnSort = {
 
 type SortingState = ColumnSort[]
 
+export const renderDetailsButton = (content: string): boolean => {
+  try { return Boolean(new URL(content)) }
+  catch(e){ return false }
+}
+
 const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) => {
 
   const [sorting, setSorting] = useState<SortingState>([])
@@ -38,18 +43,13 @@ const BooksTable = <T extends object>({ data, columns }: IReactTableProps<T>) =>
     }
   })
 
-  const renderDetailsButton = (content: string): boolean => {
-    try { return Boolean(new URL(content)) }
-    catch(e){ return false }
-  }
-
   const handleOnClick = (url: string | undefined):void => {
     setLoading(true)
     url && setCurrentBookUrl(url)
     navigate('/libro')
   }
 
-  const handleOnFavorite = (url:string | undefined) => {
+  const handleOnFavorite = (url:string | undefined): void => {
     url && favBook(url)
     setToastOpen(true)
     setTimeout(() => {

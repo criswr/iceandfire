@@ -35,6 +35,13 @@ const defaultContext: BookContextType = {
 
 export const BookContext = createContext<BookContextType>(defaultContext)
 
+export const formatDate = (rawDate: string|Date): string => {
+    const date = new Date(rawDate)
+    const formattedDate = date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
+    return formattedDate
+}
+
+
 const BookContextProvider = ({children}:Children) => {
 
     const [bookList, setBookList] = useState<IBooks[]>([])
@@ -76,12 +83,6 @@ const BookContextProvider = ({children}:Children) => {
 
     const addBook = (newBook: IBooks): void => {
         setBookList([...bookList, newBook])
-    }
-
-    const formatDate = (rawDate: string|Date): string => {
-        const date = new Date(rawDate)
-        const formattedDate = date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
-        return formattedDate
     }
 
     return (
